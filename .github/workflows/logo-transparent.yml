@@ -1,0 +1,46 @@
+name: Make logo background transparent
+on:
+  push:
+    paths:
+      - '.github/workflows/logo-transparent.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  logo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Remove white background from logo
+        run: |
+          pip install pillow numpy
+          cat > /tmp/logo_fix.py <<'EOF'
+          from PIL import Image
+          import numpy as np
+          path = 'assets/logo.png'
+          src = Image.open(path).convert('RGBA')
+          if np.asarray(src)[..., 3].min() < 255:
+              print('Logo already transparent, nothing to do'); raise SystemExit(0)
+          im = np.asarray(src.convert('RGB')).astype(float)
+          mn = im.min(axis=2)
+          a = np.clip((250 - mn) / (250 - 175), 0, 1)
+          out = np.zeros(im.shape[:2] + (4,))
+          safe = np.where(a > 0, a, 1)[..., None]
+          out[..., :3] = np.clip((im - (1 - a)[..., None] * 255) / safe, 0, 255)
+          out[..., 3] = a * 255
+          img = Image.fromarray(out.astype('uint8'), 'RGBA')
+          b = img.split()[-1].point(lambda v: 255 if v > 10 else 0).getbbox()
+          img = img.crop((max(b[0]-6,0), max(b[1]-6,0), min(b[2]+6,img.width), min(b[3]+6,img.height)))
+          img.save(path, optimize=True)
+          print('Saved', img.size)
+          EOF
+          python /tmp/logo_fix.py
+          if git diff --quiet; then echo "No change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/logo.png
+          git commit -m "Make logo background transparent"
+          git push
