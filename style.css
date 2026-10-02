@@ -60,8 +60,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- Header / Nav ---------- */
 header.site-header {
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-border);
+  background: var(--navy-dark);
+  border-bottom: 2px solid #c9a24a;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -70,7 +70,7 @@ header.site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 10px 0;
 }
 .logo {
   font-size: 26px;
@@ -88,9 +88,9 @@ header.site-header {
   text-transform: uppercase;
 }
 .logo-link { display: block; line-height: 0; }
-.logo-img { height: 56px; width: auto; }
+.logo-img { height: 84px; width: auto; }
 @media (max-width: 500px) {
-  .logo-img { height: 44px; }
+  .logo-img { height: 62px; }
 }
 nav.main-nav ul {
   display: flex;
@@ -99,7 +99,7 @@ nav.main-nav ul {
 nav.main-nav a {
   font-weight: 600;
   font-size: 14.5px;
-  color: var(--text-dark);
+  color: #e6edf5;
   padding: 6px 0;
   border-bottom: 2px solid transparent;
 }
@@ -124,7 +124,7 @@ nav.main-nav a.active {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--navy);
+  color: #ffffff;
 }
 
 /* ---------- Hero ---------- */
@@ -516,13 +516,13 @@ footer.site-footer {
 .footer-logo span { color: var(--orange); }
 .footer-logo-box {
   display: inline-block;
-  background: var(--white);
-  padding: 10px 16px;
+  background: transparent;
+  padding: 0;
   border-radius: 8px;
   margin-bottom: 14px;
   line-height: 0;
 }
-.footer-logo-box img { height: 46px; width: auto; }
+.footer-logo-box img { height: 72px; width: auto; }
 .footer-bottom {
   border-top: 1px solid #ffffff1a;
   padding-top: 20px;
