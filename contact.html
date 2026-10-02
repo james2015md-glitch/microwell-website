@@ -190,12 +190,13 @@
 
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 <script>
-/* WhatsApp: on desktop open WhatsApp Web directly; on mobile keep wa.me (opens the app) */
+/* WhatsApp: use the official api.whatsapp.com/send link so the supplier's number is kept on phone, desktop app and WhatsApp Web */
 (function(){
-  if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) return;
-  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){
-    var u = new URL(a.href), phone = u.pathname.replace(/\D/g,''), text = u.searchParams.get('text');
-    a.href = 'https://web.whatsapp.com/send?phone=' + phone + (text ? '&text=' + encodeURIComponent(text) : '');
+  document.querySelectorAll('a[href*="wa.me/"], a[href*="web.whatsapp.com/send"]').forEach(function(a){
+    var u = new URL(a.href);
+    var phone = (u.searchParams.get('phone') || u.pathname).replace(/\D/g,'') || '918178728099';
+    var text = u.searchParams.get('text');
+    a.href = 'https://api.whatsapp.com/send/?phone=' + phone + (text ? '&text=' + encodeURIComponent(text) : '') + '&type=phone_number&app_absent=0';
   });
 })();
 </script>
