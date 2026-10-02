@@ -189,5 +189,15 @@
 </a>
 
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script>
+/* WhatsApp: on desktop open WhatsApp Web directly; on mobile keep wa.me (opens the app) */
+(function(){
+  if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) return;
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){
+    var u = new URL(a.href), phone = u.pathname.replace(/\D/g,''), text = u.searchParams.get('text');
+    a.href = 'https://web.whatsapp.com/send?phone=' + phone + (text ? '&text=' + encodeURIComponent(text) : '');
+  });
+})();
+</script>
 </body>
 </html>
